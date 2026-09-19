@@ -1,0 +1,27 @@
+{
+  "manifest_version": 3,
+  "name": "AI Vocabulary Builder",
+  "version": "1.5.0",
+  "description": "Highlight or type any word to get an AI-powered, context-aware explanation and build your personal vocabulary list.",
+  "permissions": ["storage", "activeTab", "scripting", "contextMenus"],
+  "host_permissions": ["http://localhost:8000/*"],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "AI Vocabulary Builder"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"],
+      "run_at": "document_idle"
+    }
+  ],
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  }
+}

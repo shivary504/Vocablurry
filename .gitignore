@@ -1,0 +1,16 @@
+# Secrets — never commit your real API key
+backend/.env
+
+# Generated data — user-specific, shouldn't be in version control
+backend/words.json
+backend/explain_cache.json
+
+# Python
+backend/__pycache__/
+**/__pycache__/
+*.pyc
+backend/venv/
+backend/.venv/
+
+# OS
+.DS_Store

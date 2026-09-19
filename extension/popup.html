@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>AI Vocabulary Builder</title>
+  <link rel="stylesheet" href="popup.css" />
+</head>
+<body>
+  <div class="app">
+    <header class="app__header">
+      <span class="app__logo">📖</span>
+      <h1>AI Vocabulary</h1>
+    </header>
+
+    <div class="tabs">
+      <button class="tab tab--active" data-tab="lookup">Lookup</button>
+      <button class="tab" data-tab="saved">Saved Words</button>
+    </div>
+
+    <!-- LOOKUP TAB -->
+    <section id="tab-lookup" class="tab-panel tab-panel--active">
+      <form id="lookup-form">
+        <p class="prompt-line">What's the word today?</p>
+        <input
+          id="word-input"
+          type="text"
+          placeholder="Type a word..."
+          autocomplete="off"
+          required
+        />
+
+        <div id="context-box" class="context-box hidden">
+          <label>Captured context</label>
+          <p id="context-text"></p>
+          <button type="button" id="clear-context">Clear context</button>
+        </div>
+
+        <button type="submit" id="explain-btn">Explain</button>
+      </form>
+
+      <div id="loading-dots" class="loading-dots hidden">
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+      </div>
+
+      <div id="result" class="result hidden">
+        <div class="result__header">
+          <h2 id="result-word"></h2>
+          <span id="result-pronunciation" class="pronunciation"></span>
+          <span id="result-style-badge" class="style-badge"></span>
+        </div>
+        <p id="result-meaning" class="meaning"></p>
+        <p class="label">Example</p>
+        <p id="result-example" class="example"></p>
+        <div id="related-wrap" class="hidden">
+          <p class="label">Related words</p>
+          <p id="result-related" class="related"></p>
+        </div>
+
+        <div class="result__actions">
+          <button id="save-btn">💾 Save Word</button>
+          <button id="other-styles-btn" type="button">Not what you needed?</button>
+        </div>
+
+        <div id="style-picker" class="style-picker hidden">
+          <p class="label">Try a different style</p>
+          <div class="style-picker__grid">
+            <button type="button" class="style-chip" data-style="simple">Simple</button>
+            <button type="button" class="style-chip" data-style="technical">Technical</button>
+            <button type="button" class="style-chip" data-style="academic">Academic</button>
+            <button type="button" class="style-chip" data-style="literary">Literary</button>
+          </div>
+        </div>
+      </div>
+
+      <div id="status" class="status"></div>
+    </section>
+
+    <!-- SAVED WORDS TAB -->
+    <section id="tab-saved" class="tab-panel">
+      <div class="search-box">
+        <svg class="search-box__icon" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="8.5" cy="8.5" r="6" stroke="currentColor" stroke-width="1.6"/>
+          <line x1="13.1" y1="13.1" x2="17.5" y2="17.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+        </svg>
+        <input id="search-input" type="text" placeholder="Search your words..." />
+      </div>
+
+      <div class="list-bar">
+        <div id="list-chips" class="list-chips"></div>
+        <button id="new-list-btn" type="button" class="new-list-btn">+ New list</button>
+      </div>
+      <div id="new-list-form" class="new-list-form hidden">
+        <input id="new-list-input" type="text" placeholder="List name..." maxlength="40" />
+        <button id="new-list-confirm" type="button">Add</button>
+        <button id="new-list-cancel" type="button">Cancel</button>
+      </div>
+
+      <div id="saved-list" class="saved-list"></div>
+      <p id="empty-state" class="empty-state hidden">No words saved yet. Look one up!</p>
+    </section>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
