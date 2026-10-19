@@ -2,46 +2,73 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Vocablurry</title>
+  <!-- Outfit: geometric sans from the Bauhaus spec. Falls back to system
+       geometric/humanist sans if offline (see --font in popup.css). -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;700;900&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="popup.css" />
 </head>
 <body>
   <div class="app">
+
     <header class="app__header">
-      <span class="app__logo">📖</span>
+      <div class="logo" aria-hidden="true">
+        <span class="logo__circle"></span>
+        <span class="logo__square"></span>
+        <span class="logo__triangle tri"></span>
+      </div>
       <h1>Vocablurry</h1>
     </header>
 
-    <div class="tabs">
-      <button class="tab tab--active" data-tab="lookup">Lookup</button>
-      <button class="tab" data-tab="saved">Saved Words</button>
+    <div class="tabs" role="tablist">
+      <button class="tab tab--active" data-tab="lookup" role="tab" aria-selected="true" aria-controls="tab-lookup">Lookup</button>
+      <button class="tab" data-tab="saved" role="tab" aria-selected="false" aria-controls="tab-saved">Saved Words</button>
     </div>
 
-    <!-- LOOKUP TAB -->
-    <section id="tab-lookup" class="tab-panel tab-panel--active">
-      <form id="lookup-form">
-        <p class="prompt-line">What's the word today?</p>
-        <input
-          id="word-input"
-          type="text"
-          placeholder="Type a word..."
-          autocomplete="off"
-          required
-        />
+    <!-- ===================== LOOKUP TAB ===================== -->
+    <section id="tab-lookup" class="tab-panel tab-panel--active" role="tabpanel">
 
-        <div id="context-box" class="context-box hidden">
-          <label>Captured context</label>
-          <p id="context-text"></p>
-          <button type="button" id="clear-context">Clear context</button>
+      <div class="band band--yellow hero">
+        <h2 class="prompt-line">What's the word today?</h2>
+        <div class="hero__art" aria-hidden="true">
+          <span class="shape shape--circle"></span>
+          <span class="shape shape--diamond"></span>
+          <span class="shape shape--tri tri"></span>
+        </div>
+      </div>
+
+      <form id="lookup-form">
+        <div class="lookup-row">
+          <input
+            id="word-input"
+            type="text"
+            placeholder="Type a word..."
+            autocomplete="off"
+            aria-label="Word to look up"
+            required
+          />
+          <button type="submit" id="explain-btn" class="btn btn--red btn--icon" aria-label="Explain" title="Explain">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="square" aria-hidden="true"><path d="M4 12h16M14 6l6 6-6 6"/></svg>
+          </button>
         </div>
 
-        <button type="submit" id="explain-btn">Explain</button>
+        <div id="context-box" class="context-box hidden">
+          <div class="context-box__head">
+            <span class="tag">Captured context</span>
+            <button type="button" id="clear-context" class="btn btn--ghost btn--sm">Clear context</button>
+          </div>
+          <p id="context-text"></p>
+        </div>
+
       </form>
 
-      <div id="loading-dots" class="loading-dots hidden">
-        <span class="dot"></span>
-        <span class="dot"></span>
-        <span class="dot"></span>
+      <div id="loading-dots" class="loading-dots hidden" role="status" aria-label="Looking up word">
+        <span class="dot dot--circle"></span>
+        <span class="dot dot--square"></span>
+        <span class="dot dot--tri tri"></span>
       </div>
 
       <div id="result" class="result hidden">
@@ -50,56 +77,71 @@
           <span id="result-pronunciation" class="pronunciation"></span>
           <span id="result-style-badge" class="style-badge"></span>
         </div>
+
         <p id="result-meaning" class="meaning"></p>
-        <p class="label">Example</p>
-        <p id="result-example" class="example"></p>
-        <div id="related-wrap" class="hidden">
-          <p class="label">Related words</p>
+
+        <div class="field">
+          <p class="label">Example</p>
+          <p id="result-example" class="example"></p>
+        </div>
+
+        <div id="related-wrap" class="field hidden">
+          <p class="label label--circle">Related words</p>
           <p id="result-related" class="related"></p>
         </div>
 
         <div class="result__actions">
-          <button id="save-btn">💾 Save Word</button>
-          <button id="other-styles-btn" type="button">Not what you needed?</button>
+          <button id="save-btn" type="button" class="btn btn--blue">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="square" aria-hidden="true"><path d="M12 4v16M4 12h16"/></svg>
+            <span>Save Word</span>
+          </button>
+          <button id="other-styles-btn" type="button" class="btn btn--ghost">Not what you needed?</button>
         </div>
 
         <div id="style-picker" class="style-picker hidden">
-          <p class="label">Try a different style</p>
+          <p class="label label--diamond">Try a different style</p>
           <div class="style-picker__grid">
-            <button type="button" class="style-chip" data-style="simple">Simple</button>
-            <button type="button" class="style-chip" data-style="technical">Technical</button>
-            <button type="button" class="style-chip" data-style="academic">Academic</button>
-            <button type="button" class="style-chip" data-style="literary">Literary</button>
+            <button type="button" class="btn btn--outline btn--sm style-chip" data-style="simple">Simple</button>
+            <button type="button" class="btn btn--outline btn--sm style-chip" data-style="technical">Technical</button>
+            <button type="button" class="btn btn--outline btn--sm style-chip" data-style="academic">Academic</button>
+            <button type="button" class="btn btn--outline btn--sm style-chip" data-style="literary">Literary</button>
           </div>
         </div>
       </div>
 
-      <div id="status" class="status"></div>
+      <div id="status" class="status" role="status" aria-live="polite"></div>
     </section>
 
-    <!-- SAVED WORDS TAB -->
-    <section id="tab-saved" class="tab-panel">
+    <!-- ===================== SAVED WORDS TAB ===================== -->
+    <section id="tab-saved" class="tab-panel" role="tabpanel">
+
+      <div class="band band--blue">
+        <h2 class="band__title">Your Words</h2>
+      </div>
+
       <div class="search-box">
-        <svg class="search-box__icon" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="8.5" cy="8.5" r="6" stroke="currentColor" stroke-width="1.6"/>
-          <line x1="13.1" y1="13.1" x2="17.5" y2="17.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+        <svg class="search-box__icon" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <circle cx="8.5" cy="8.5" r="6" stroke="currentColor" stroke-width="2.4"/>
+          <line x1="13.1" y1="13.1" x2="17.5" y2="17.5" stroke="currentColor" stroke-width="2.4" stroke-linecap="square"/>
         </svg>
-        <input id="search-input" type="text" placeholder="Search your words..." />
+        <input id="search-input" type="text" placeholder="Search your words..." aria-label="Search your saved words" />
       </div>
 
       <div class="list-bar">
         <div id="list-chips" class="list-chips"></div>
-        <button id="new-list-btn" type="button" class="new-list-btn">+ New list</button>
+        <button id="new-list-btn" type="button" class="btn btn--yellow btn--sm btn--pill">+ New list</button>
       </div>
+
       <div id="new-list-form" class="new-list-form hidden">
-        <input id="new-list-input" type="text" placeholder="List name..." maxlength="40" />
-        <button id="new-list-confirm" type="button">Add</button>
-        <button id="new-list-cancel" type="button">Cancel</button>
+        <input id="new-list-input" type="text" placeholder="List name..." maxlength="40" aria-label="New list name" />
+        <button id="new-list-confirm" type="button" class="btn btn--red btn--sm">Add</button>
+        <button id="new-list-cancel" type="button" class="btn btn--outline btn--sm">Cancel</button>
       </div>
 
       <div id="saved-list" class="saved-list"></div>
       <p id="empty-state" class="empty-state hidden">No words saved yet. Look one up!</p>
     </section>
+
   </div>
 
   <script src="popup.js"></script>
