@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "AI Vocabulary Builder",
+  "name": "Vocablurry",
   "version": "1.5.0",
   "description": "Highlight or type any word to get an AI-powered, context-aware explanation and build your personal vocabulary list.",
   "permissions": ["storage", "activeTab", "scripting", "contextMenus"],
@@ -10,7 +10,7 @@
   },
   "action": {
     "default_popup": "popup.html",
-    "default_title": "AI Vocabulary Builder"
+    "default_title": "Vocablurry"
   },
   "content_scripts": [
     {
