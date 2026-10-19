@@ -2,7 +2,9 @@
 
 A Chrome extension (Manifest V3) that explains any word you highlight or
 type — using its surrounding sentence for context — backed by a FastAPI
-server that calls Gemini only when it actually needs to.
+server that calls Gemini only when it actually needs to. The UI follows a
+Bauhaus design system: primary colors, hard geometric shadows, and a
+constructivist logo mark built from a circle, a square, and a triangle.
 
 ## What's included
 
@@ -13,7 +15,7 @@ ai-vocab-extension/
 │   ├── popup.html / popup.css / popup.js   Lookup tab + Saved Words tab (with lists)
 │   ├── content.js                          Detects page text selection + sentence context
 │   ├── background.js                       Right-click "Explain word" context menu
-│   └── icons/
+│   └── icons/                              Bauhaus-style toolbar icon (16/48/128px)
 └── backend/             FastAPI server
     ├── main.py           POST /explain, POST/GET/DELETE /words
     ├── requirements.txt
@@ -32,6 +34,9 @@ ai-vocab-extension/
   a list without deleting it, and a word can belong to more than one list.
 - **Cost-safety by design** (see below) — the backend avoids calling Gemini
   whenever a cheaper or free option can answer the same question.
+- **Bauhaus visual design** — color-blocked bands, hard offset shadows,
+  square/pill-only corner radii, and a geometric circle/square/triangle
+  logo mark used consistently in the header and the toolbar icon.
 
 ## How the backend keeps costs down
 
@@ -58,6 +63,24 @@ What this does not yet cover, worth adding before going fully public:
   stops one client from calling `/explain` in a tight loop.
 - **A hard spending cap** on the Gemini API key itself, via Google Cloud
   billing alerts, as a last-resort safety net.
+
+## Design system
+
+The popup follows a Bauhaus-inspired system rather than a generic utility
+look:
+
+- **Palette**: primary red (`#D02020`), blue (`#1040C0`), yellow (`#F0C020`),
+  near-black (`#121212`), and an off-white background — nothing else.
+- **Shape language**: every border radius is either `0` (square) or `9999px`
+  (pill/circle) — no in-between rounding. Decorative elements are built from
+  circles, squares, and triangles, matching the header logo mark.
+- **Shadows**: hard offset shadows (e.g. `4px 4px 0 0 black`), never blurred.
+  Buttons visually "press" on click by translating into their own shadow.
+- **Typography**: Outfit (geometric sans), loaded from Google Fonts with a
+  system geometric-sans fallback stack for offline use. Headlines are bold,
+  uppercase, and tightly tracked.
+- Respects `prefers-reduced-motion` by disabling hover-lift and press
+  animations for users who've requested reduced motion at the OS level.
 
 ## 1. Run the backend
 
