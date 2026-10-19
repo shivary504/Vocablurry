@@ -1,7 +1,7 @@
 chrome.runtime.onInstalled.addListener(() => {
   chrome.contextMenus.create({
     id: "explain-word",
-    title: 'Explain "%s" with AI Vocabulary',
+    title: 'Explain "%s" with Vocablurry',
     contexts: ["selection"],
   });
 });
