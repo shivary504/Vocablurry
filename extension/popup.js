@@ -22,6 +22,7 @@ const els = {
   saveBtn: document.getElementById("save-btn"),
   otherStylesBtn: document.getElementById("other-styles-btn"),
   stylePicker: document.getElementById("style-picker"),
+  lookupPanel: document.getElementById("tab-lookup"),
   status: document.getElementById("status"),
   loadingDots: document.getElementById("loading-dots"),
 
@@ -47,9 +48,13 @@ let activeListFilter = "all"; // "all" or a list name
 // =========================================================================
 els.tabs.forEach((tab) => {
   tab.addEventListener("click", () => {
-    els.tabs.forEach((t) => t.classList.remove("tab--active"));
+    els.tabs.forEach((t) => {
+      t.classList.remove("tab--active");
+      t.setAttribute("aria-selected", "false");
+    });
     els.panels.forEach((p) => p.classList.remove("tab-panel--active"));
     tab.classList.add("tab--active");
+    tab.setAttribute("aria-selected", "true");
     document.getElementById(`tab-${tab.dataset.tab}`).classList.add("tab-panel--active");
 
     if (tab.dataset.tab === "saved") {
@@ -110,6 +115,7 @@ els.form.addEventListener("submit", async (e) => {
 });
 
 async function runLookup(word, style) {
+  els.lookupPanel.classList.add("is-compact"); // collapse the hero for good
   setStatus("", null);
   els.explainBtn.disabled = true;
   els.result.classList.add("hidden");
@@ -137,6 +143,7 @@ async function runLookup(word, style) {
 
 function renderResult(data) {
   els.resultWord.textContent = data.word;
+  els.resultWord.style.setProperty("--chars", String(data.word.length));
   els.resultPron.textContent = data.pronunciation ? `/${data.pronunciation}/` : "";
   els.resultStyleBadge.textContent = data.style;
   els.resultMeaning.textContent = data.meaning;
@@ -339,7 +346,10 @@ async function renderSavedWords(filter = "") {
         <button data-id="${entry.id}">Delete</button>
       </div>
       <p>${escapeHtml(entry.meaning)}</p>
-      <div class="meta">${entry.explanation_type} • saved ${new Date(entry.date_saved).toLocaleDateString()}</div>
+      <div class="meta">
+        <span class="meta__style">${escapeHtml(entry.explanation_type)}</span>
+        <span>Saved ${new Date(entry.date_saved).toLocaleDateString()}</span>
+      </div>
       <div class="saved-card__lists"></div>
       ${
         availableToAdd.length
@@ -364,6 +374,8 @@ async function renderSavedWords(filter = "") {
       tag.className = "word-list-tag";
       tag.innerHTML = `<span>${escapeHtml(listName)}</span>`;
       const removeBtn = document.createElement("button");
+      removeBtn.type = "button";
+      removeBtn.setAttribute("aria-label", `Remove from ${listName}`);
       removeBtn.textContent = "✕";
       removeBtn.addEventListener("click", () => toggleWordInList(entry.id, listName));
       tag.appendChild(removeBtn);
